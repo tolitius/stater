@@ -49,7 +49,7 @@ dev=> (find-orders conn "TSLA")
 dev=>
 ```
 
-via HTTP GET:
+via HTTP GET [http://localhost:4242/neo/orders/GOOG](http://localhost:4242/neo/orders/GOOG)
 
 <img src="doc/neo/find-orders.png" width="400px">
 
@@ -58,7 +58,7 @@ via HTTP GET:
 
 As of right now Neo is undergoing his initial training, and it will only return the total order _quantity that was matched_ accross all the orders in the book.
 
-All match request do hit Neo's ultra low speed matching engine.
+All match requests do hit Neo's ultra low speed matching engine.
 
 via REPL:
 
@@ -78,7 +78,7 @@ The quote's `offer` matched nothing, the `bid` matched two of the orders (their 
 
 The quote's quantity is `400`, `300` of which matched, hence total matched quantity is `300`.
 
-via HTTP GET:
+via HTTP GET [http://localhost:4242/neo/match-quote?ticker=GOOG&qty=500&bid=665.54&offer=665.58](http://localhost:4242/neo/match-quote?ticker=GOOG&qty=500&bid=665.54&offer=665.58):
 
 <img src="doc/neo/match-quote.png" width="700px">
 
