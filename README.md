@@ -1,10 +1,10 @@
 ## stater
 
-example [mount](https://github.com/tolitius/mount) based apps.
+sample [mount](https://github.com/tolitius/mount) based apps
 
 ## Neo Options Exchange
 
-[pic.. coming]
+###### [desing pic... coming]
 
 ### Boot Neo
 
@@ -56,8 +56,9 @@ via HTTP GET:
 
 ### Match Quotes
 
-As of right now Neo is undergoing his initial training hence 
-it will return only the total order quantity that were matched accross all orders in the book.
+As of right now Neo is undergoing his initial training, and it will only return the total order _quantity that was matched_ accross all the orders in the book.
+
+All match request do hit Neo's ultra low speed matching engine.
 
 via REPL:
 
@@ -68,18 +69,18 @@ dev=> (match-quote quote (find-orders conn "GOOG"))
 300
 ```
 
-The quote's offer matched nothing, the bid matched two of the orders (their offers) from the book:
+The quote's `offer` matched nothing, the `bid` matched two of the orders (their `offers` <= quote's `bid`) in the book:
 
 ```clojure
 {:db/id 17592186045422, :order/symbol "GOOG", :order/bid 665.48M, :order/qty 100, :order/offer 665.53M}
 {:db/id 17592186045424, :order/symbol "GOOG", :order/bid 665.49M, :order/qty 200, :order/offer 665.52M})
 ```
 
-The quote's quantity is 400, 300 of which matched, hence total matched quantity is 300.
+The quote's quantity is `400`, `300` of which matched, hence total matched quantity is `300`.
 
 via HTTP GET:
 
-<img src="doc/neo/match-quote.png" width="400px">
+<img src="doc/neo/match-quote.png" width="700px">
 
 ### "Neo Reload"
 
@@ -108,7 +109,7 @@ dev=>
 
 In case a namespace that was recompiled has a `defstate` in it, mount will clean it up and restart after the namespace was recompiled:
 
-<img src="doc/neo-reload.png" width="400px">
+<img src="doc/neo/neo-reload.png" width="600px">
 
 (more details on ns recompilation [here](https://github.com/tolitius/mount#recompiling-namespaces-with-running-states))
 
@@ -116,7 +117,7 @@ In case a namespace that was recompiled has a `defstate` in it, mount will clean
 
 Neo business logic has not `defstate`s and lives separately:
 
-<img src="doc/neo/neo-business.png" width="100px"/>
+<img src="doc/neo/neo-business.png" width="300px"/>
 
 options/ `book`, `engine` and `order` live a full happy referentially transparent life.
 
@@ -132,7 +133,7 @@ dev=>
 
 You can easily correlate all these states to their homes:
 
-<img src="doc/neo/neo-states.png" width="100px">
+<img src="doc/neo/neo-states.png" width="300px">
 
 It does not mean that each state should live in its separate namespaces, 
 but it's always a good idea to start with that, since, at least in this example, those are different external resources.
