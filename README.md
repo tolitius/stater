@@ -115,11 +115,11 @@ In case a namespace that was recompiled has a `defstate` in it, mount will clean
 
 ## Neo Business
 
-Neo business logic has not `defstate`s and lives separately:
+Neo business logic does not have `defstate`s and lives in its own gated neighborhood:
 
 <img src="doc/neo/neo-business.png" width="300px"/>
 
-options/ `book`, `engine` and `order` live a full happy referentially transparent life.
+options/ `book`, `engine` and `order` live a full, happy referentially transparent life.
 
 ## Neo States
 
