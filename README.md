@@ -9,6 +9,8 @@ sample [mount](https://github.com/tolitius/mount) based apps
 ### Boot Neo
 
 ```clojure
+$ cd neo
+
 $ boot repl
 boot.user=>
 
