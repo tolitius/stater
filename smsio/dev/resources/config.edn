@@ -1,0 +1,6 @@
+{:www {:port 4242}
+
+ ;; these could be your twilio test credentials that work with "magic" numbers
+ :sms {:auth-token ""
+       :sid ""}
+ }
