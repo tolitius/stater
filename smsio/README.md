@@ -1,6 +1,6 @@
 # smsio
 
-Sending SMS messages via HTTP with Twilio API
+Sending SMS messages via HTTP with [Twilio](https://github.com/owainlewis/twilio)
 
 This app demonstrates how a state can be just a funciton as well as how states can be swapped for testing.
 
