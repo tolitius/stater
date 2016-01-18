@@ -19,3 +19,4 @@ doo-index.html
 **/.nrepl-port
 .cljs_rhino_repl/
 out/
+**/.DS_Store
