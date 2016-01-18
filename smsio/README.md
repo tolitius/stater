@@ -4,7 +4,7 @@ Sending SMS messages via HTTP with [Twilio](https://github.com/owainlewis/twilio
 
 This app demonstrates how a state can be just a funciton as well as how states can be swapped for testing.
 
-<img src="../doc/smsio/smsio-design.png" width="650px">
+<div style="text-align:center"><img src="../doc/smsio/smsio-design.png" width="650px"></div>
 
 ## Sending Texts
 
