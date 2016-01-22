@@ -3,7 +3,7 @@
 A web app that serves as an example of structuring an application with [mount](https://github.com/tolitius/mount) 
 where business logic is separated from app's external resources.
 
-###### [desing pic... coming]
+<p align="center"><img src="../doc/neo/neo-design.png" width="700px"></p>
 
 ## Boot Neo
 
