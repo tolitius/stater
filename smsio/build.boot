@@ -1,6 +1,6 @@
 (set-env!
   :source-paths #{"src"}
-  :dependencies '[[mount                          "0.1.9-SNAPSHOT"]
+  :dependencies '[[mount                          "0.1.9"]
                   [twilio-api                     "1.0.1"]
                   [compojure                      "1.4.0"]
                   [ring/ring-jetty-adapter        "1.1.0"]
@@ -38,7 +38,7 @@
     [:appender-ref {:ref "STDOUT"}]]])
 
 (deftask dev []
-  (set-env! :source-paths #(conj % "dev"))
+  (set-env! :source-paths #(conj % "dev" "test/app"))
 
   (alter-var-root #'log/*logger-factory*
                   (constantly (log-service/make-factory log4b)))
