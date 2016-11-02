@@ -3,12 +3,15 @@
  :resource-paths  #{"resources"}
  :dependencies '[[org.clojure/clojure          "1.8.0"]
                  [org.clojure/clojurescript    "1.9.229"]
+                 [compojure                    "1.5.1"]
+                 [ring/ring-jetty-adapter      "1.5.0"]
+                 [ring                         "1.5.0"]
                  [rum                          "0.10.7"]
                  [mount                        "0.1.11-SNAPSHOT"]
                  [tolitius/envoy               "0.0.1-SNAPSHOT"]
                  [org.clojure/tools.logging    "0.3.1"]
 
-                 ;; dev /test 
+                 ;; dev / test 
                  [adzerk/boot-cljs             "1.7.228-1"       :scope "test"]
                  [adzerk/boot-cljs-repl        "0.3.0"           :scope "test"]
                  [adzerk/boot-reload           "0.4.8"           :scope "test"]
@@ -23,7 +26,8 @@
  '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
  '[adzerk.boot-reload    :refer [reload]]
  '[pandeiro.boot-http    :refer [serve]]
- '[crisptrutski.boot-cljs-test :refer [test-cljs]])
+ '[crisptrutski.boot-cljs-test :refer [test-cljs]]
+ '[hubble.app :as app])
 
 (deftask build []
   (comp (speak)
@@ -32,8 +36,8 @@
         ))
 
 (deftask run []
-  (comp (serve)
-        (watch)
+  (app/-main)
+  (comp (watch)
         (cljs-repl)
         (reload)
         (build)))

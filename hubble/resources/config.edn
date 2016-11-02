@@ -1,7 +1,8 @@
 {:consul {:host "http://localhost:8500"
           :kv-prefix "/v1/kv"}
- :hubble
-  {:store "spacecraft://tape"
+  :hubble
+  {:server {:port 4242}
+   :store "spacecraft://tape"
    :camera 
     {:mode "color"}
    :mission "Horsehead Nebula"}}
