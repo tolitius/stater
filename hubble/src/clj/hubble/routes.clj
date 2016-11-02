@@ -16,6 +16,9 @@
   (GET "/" []
        (render "index.html"))
 
+  (GET "/config" []
+       (str config))
+
   (route/resources "/" {:root "."})
   (route/not-found "page not found"))
 
