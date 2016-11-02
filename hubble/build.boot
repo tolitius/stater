@@ -17,6 +17,7 @@
                  [adzerk/boot-cljs-repl        "0.3.0"           :scope "test"]
                  [adzerk/boot-reload           "0.4.8"           :scope "test"]
                  [pandeiro/boot-http           "0.7.2"           :scope "test"]
+                 [adzerk/boot-logservice       "1.0.1"           :scope "test"]
                  [com.cemerick/piggieback      "0.2.1"           :scope "test"]
                  [org.clojure/tools.nrepl      "0.2.12"          :scope "test"]
                  [weasel                       "0.7.0"           :scope "test"]
@@ -27,8 +28,17 @@
  '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
  '[adzerk.boot-reload    :refer [reload]]
  '[pandeiro.boot-http    :refer [serve]]
+ '[adzerk.boot-logservice :as log-service]
+ '[clojure.tools.logging :as log]
  '[crisptrutski.boot-cljs-test :refer [test-cljs]]
  '[hubble.app :as app])
+
+(def log4b
+  [:configuration
+   [:appender {:name "STDOUT" :class "ch.qos.logback.core.ConsoleAppender"}
+    [:encoder [:pattern "%-5level %logger{36} - %msg%n"]]]
+   [:root {:level "TRACE"}
+    [:appender-ref {:ref "STDOUT"}]]])
 
 (deftask build []
   (comp (speak)
@@ -50,14 +60,17 @@
 (deftask development []
   (task-options! cljs {:optimizations :none :source-map true}
                  reload {:on-jsload 'hubble.app/init})
+
+  (alter-var-root #'log/*logger-factory*
+                  (constantly (log-service/make-factory log4b)))
   identity)
 
-(deftask dev
-  "Simple alias to run application in development mode"
-  []
+(deftask dev []
+  (comp (development)))
+
+(deftask up []
   (comp (development)
         (run)))
-
 
 (deftask testing []
   (set-env! :source-paths #(conj % "test/cljs"))

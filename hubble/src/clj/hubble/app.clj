@@ -9,6 +9,6 @@
 
 ;; example of an app entry point
 (defn -main [& args]
-  (init-consul "resources/config.edn")  ;; in reality this would be already in consul (i.e. no need)
   (with-logging-status)
+  (init-consul "resources/config.edn")  ;; in reality this would be already in consul (i.e. no need)
   (mount/start))

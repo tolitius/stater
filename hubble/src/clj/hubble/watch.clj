@@ -16,8 +16,7 @@
   (envoy/watch-path path
                     (fn [changed]
                       (println "changed >>>>" (keys changed))
-                      (on-change listener (keys changed))
-                      )))
+                      (on-change listener (keys changed)))))
 
 (defstate consul-watcher :start (watch-consul (str (config :consul) "/hubble"))
                          :stop (envoy/stop consul-watcher))
