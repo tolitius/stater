@@ -1,5 +1,6 @@
 (ns hubble.watch
   (:require [envoy.core :as envoy]
+            [clojure.tools.logging :refer [info]]
             [mount.core :as mount :refer [defstate add-watcher on-change]]
             [hubble.consul :refer [config]]))
 
@@ -12,11 +13,8 @@
 (defstate listener :start (add-watchers))
 
 (defn watch-consul [path]
-  (println "watching on" path)
-  (envoy/watch-path path
-                    (fn [changed]
-                      (println "changed >>>>" (keys changed))
-                      (on-change listener (keys changed)))))
+  (info "watching on" path)
+  (envoy/watch-path path #(on-change listener (keys %))))
 
 (defstate consul-watcher :start (watch-consul (str (config :consul) "/hubble"))
                          :stop (envoy/stop consul-watcher))

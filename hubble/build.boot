@@ -66,7 +66,8 @@
   identity)
 
 (deftask dev []
-  (comp (development)))
+  (comp (development)
+        (repl)))
 
 (deftask up []
   (comp (development)
