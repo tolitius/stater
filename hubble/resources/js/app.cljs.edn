@@ -1,0 +1,3 @@
+{:require  [hubble.app]
+ :init-fns [hubble.app/init]
+ :compiler-options {:asset-path "js/app.out"}}
