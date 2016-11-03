@@ -4,7 +4,7 @@
  :dependencies '[[org.clojure/clojure          "1.8.0"]
                  [org.clojure/clojurescript    "1.9.229"]
                  [compojure                    "1.5.1"]
-                 [ring/ring-jetty-adapter      "1.5.0"]
+                 [http-kit                     "2.2.0"]
                  [ring                         "1.5.0"]
                  [rum                          "0.10.7"]
                  [mount                        "0.1.11-SNAPSHOT"]

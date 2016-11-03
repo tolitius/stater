@@ -1,6 +1,6 @@
 (ns hubble.routes
   (:require [clojure.java.io :as io]
-            [ring.adapter.jetty :as jetty]
+            [org.httpkit.server :as httpkit]
             [ring.middleware.reload :refer [wrap-reload]]
             [compojure.route :as route]
             [compojure.core :refer [defroutes GET]]
@@ -23,12 +23,13 @@
   (route/not-found "page not found"))
 
 (defn start-www [{:keys [server]}]
-  (jetty/run-jetty (wrap-reload #'hroutes)
-                   {:port (server :port)
-                    :join? false}))
+  (httpkit/run-server (-> #'hroutes
+                          wrap-reload
+                          handler/site)
+                   {:port (server :port)}))
 
 (defstate ^{:on-reload :noop} http-server 
                               :start (start-www (config :hubble))
-                              :stop (.stop http-server))           ;; it's a "org.eclipse.jetty.server.Server" at this point
+                              :stop (http-server))    ;; http-kit/run-server returns a function that stops the server
 
 
