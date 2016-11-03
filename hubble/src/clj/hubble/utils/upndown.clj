@@ -8,50 +8,42 @@
 
 (alter-meta! *ns* assoc ::load false)
 
-(defn- f-to-action [f {:keys [status]}]
-  (info ">>>>>> fname:" (str f))
-  (let [fname (-> (str f)
-                  (split #"@")
-                  first)]
-    (case fname
-      "mount.core$up" (when-not (:started status) :up)
-      "mount.core$down" (when-not (:stopped status) :down)
-      :noop)))
-
-(defn- before [notify f & args] 
-  (let [[state-name state] args
-        action (f-to-action f state)] 
-    (when (some #{action} #{:up :down})
-      (notify {:name state-name :state (mount/current-state state-name) :action action})))
-  (apply f args))
-
-(defn- after [notify f & args] 
-  (info "in after.....")
-  (apply f args)
-  (info "in after after.....")
-  (let [[state-name state] args
-        action (f-to-action f state)] 
-    (info "in after => " action "=>" args)
+(defn- invoke [notify action args]
+  (let [[state-name _] args]
     (when (some #{action} #{:up :down})
       (notify {:name state-name :state (mount/current-state state-name) :action action}))))
 
-(defonce lifecycle-fns
-  #{#'mount.core/up
-    #'mount.core/down})
+(defn- before [action notify f & args]
+  (invoke notify action args)
+  (apply f args))
 
-(defn all-clear []
-  (doall (map #(clear-hooks %) lifecycle-fns)))
+(defn- after [action notify f & args]
+  (apply f args)
+  (invoke notify action args))
+
+(defn on-up [k f where]
+  (let [wrap (if (= where :after) after before)
+        listner (partial wrap :up f)]
+    (add-hook #'mount.core/up k listner)))
+
+(defn on-down [k f where]
+  (let [wrap (if (= where :after) after before)
+        listner (partial wrap :down f)]
+    (add-hook #'mount.core/down k listner)))
 
 (defn on-upndown [k f where]
-  (let [wrap (if (= where :after) after before)
-        listner (partial wrap f)]
-    (doall (map #(add-hook % k listner) lifecycle-fns))))
+  (on-up k f where)
+  (on-down k f where))
 
+(defn all-clear []
+  (doseq [f [#'mount.core/up
+             #'mount.core/down]]
+    (clear-hooks f)))
 
-;; useful
+;; notifiers
 (defn log [{:keys [name action]}]
   (case action
     :up (info ">> starting.." name)
     :down (info "<< stopping.." name)))
 
-;; i.e. (on-upndown :log log)
+;; i.e. (on-up :log log :before)
