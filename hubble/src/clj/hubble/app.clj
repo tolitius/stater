@@ -3,7 +3,7 @@
             [hubble.core]
             [hubble.consul :refer [init-consul]]
             [hubble.watch]
-            [hubble.routes]
+            [hubble.server]
             [hubble.utils.logging :refer [with-logging-status]])
   (:gen-class))               ;; for -main / uberjar (no need in dev)
 

@@ -3,6 +3,9 @@
  :resource-paths  #{"resources"}
  :dependencies '[[org.clojure/clojure          "1.8.0"]
                  [org.clojure/clojurescript    "1.9.229"]
+                 [com.cognitect/transit-clj    "0.8.290" :exclusions [com.fasterxml.jackson.core/jackson-core
+                                                                      com.fasterxml.jackson.core/jackson-databind]]
+                 [com.cognitect/transit-cljs   "0.8.239"]
                  [compojure                    "1.5.1"]
                  [http-kit                     "2.2.0"]
                  [ring                         "1.5.0"]
