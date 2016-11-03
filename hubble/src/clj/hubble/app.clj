@@ -3,12 +3,17 @@
             [hubble.core]
             [hubble.consul :refer [init-consul]]
             [hubble.watch]
-            [hubble.server]
-            [hubble.utils.logging :refer [with-logging-status]])
+            [hubble.server :refer [broadcast-to-clients! http-server]]
+            [hubble.utils.upndown :refer [on-upndown log]])
   (:gen-class))               ;; for -main / uberjar (no need in dev)
+
+(defn notify [{:keys [action name] :as event}]
+  (when (= action :up)
+    (broadcast-to-clients! http-server event)))
 
 ;; example of an app entry point
 (defn -main [& args]
-  (with-logging-status)
+  (on-upndown :log log :before)
   (init-consul "resources/config.edn")  ;; in reality this would be already in consul (i.e. no need)
-  (mount/start))
+  (mount/start)
+  (on-upndown :push notify :after))
