@@ -35,13 +35,24 @@
                  (get-in $ [:settings :mode])
                  (u/img-path "camera" $))}]])
 
+(rum/defc recalibrate < rum/reactive []
+  (let [next-mission (rum/react mission)]
+    [:img {:src "img/repoint-hubble.gif"}]))
+
+(defn repoint-hubble [state]
+  (rum/mount (recalibrate) (u/by-id "mission"))
+  (js/setTimeout (fn []
+                   (reset! mission state)
+                   (rum/unmount (u/by-id "mission"))
+                   (rum/mount (hubble-mission) (u/by-id "mission"))) 9000))
+
 (defn read-news [msg]
   (let [{:keys [name state]} (u/unpack msg)
         component (u/short-name name)]
     (println "news from the server:" [component state])
     (when (not= component :config)
       (case component
-        :mission (reset! mission state)
+        :mission (repoint-hubble state)
         :store (reset! store state)
         :camera (reset! camera state))
       (swap! log assoc (u/now)

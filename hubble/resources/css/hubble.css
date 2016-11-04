@@ -45,6 +45,7 @@ body {
 
 #mission img {
     max-height: 450px;
+    min-height: 290px;
 }
 
 .component-name {
