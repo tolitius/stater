@@ -14,9 +14,10 @@
            [:span.entry entry]])])
 
 (rum/defc hubble-store < rum/reactive []
-  [:img {:src (as-> (rum/react store) $
-                (get-in $ [:connected-to :url])
-                (u/img-path "store" $))}])
+  [:div [:p.component-name "store"]
+   [:img {:src (as-> (rum/react store) $
+                 (get-in $ [:connected-to :url])
+                 (u/img-path "store" $))}]])
 
 (rum/defc hubble-mission < rum/reactive []
   (let [color (if (= "mono" (-> (rum/react camera)
@@ -29,9 +30,10 @@
                   (u/img-path "mission" $))}]))
 
 (rum/defc hubble-camera < rum/reactive []
-  [:img {:src (as-> (rum/react camera) $
-                    (get-in $ [:settings :mode])
-                    (u/img-path "camera" $))}])
+  [:div [:p.component-name "camera"]
+   [:img {:src (as-> (rum/react camera) $
+                 (get-in $ [:settings :mode])
+                 (u/img-path "camera" $))}]])
 
 (defn read-news [msg]
   (let [{:keys [name state]} (u/unpack msg)
