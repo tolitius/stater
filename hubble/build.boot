@@ -8,7 +8,7 @@
                  [com.cognitect/transit-cljs   "0.8.239"]
                  [compojure                    "1.5.1"]
                  [http-kit                     "2.2.0"]
-                 [ring                         "1.5.0"]
+                 [ring                         "1.6.0-beta6"]
                  [rum                          "0.10.7"]
                  [mount                        "0.1.11-SNAPSHOT"]
                  [tolitius/envoy               "0.0.1-SNAPSHOT"]
@@ -16,9 +16,9 @@
                  [org.clojure/tools.logging    "0.3.1"]
 
                  ;; dev / test 
-                 [adzerk/boot-cljs             "1.7.228-1"       :scope "test"]
-                 [adzerk/boot-cljs-repl        "0.3.0"           :scope "test"]
-                 [adzerk/boot-reload           "0.4.8"           :scope "test"]
+                 [adzerk/boot-cljs             "1.7.228-2"       :scope "test"]
+                 [adzerk/boot-cljs-repl        "0.3.3"           :scope "test"]
+                 [adzerk/boot-reload           "0.4.13"          :scope "test"]
                  [pandeiro/boot-http           "0.7.2"           :scope "test"]
                  [adzerk/boot-logservice       "1.0.1"           :scope "test"]
                  [com.cemerick/piggieback      "0.2.1"           :scope "test"]
@@ -52,7 +52,7 @@
 (deftask run []
   (app/-main)
   (comp (watch)
-        (cljs-repl)
+        ;; (cljs-repl)
         (reload)
         (build)))
 

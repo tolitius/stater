@@ -4,7 +4,7 @@
             [org.httpkit.server :as hk]
             [ring.middleware.reload :refer [wrap-reload]]
             [compojure.route :as route]
-            [compojure.core :refer [defroutes GET]]
+            [compojure.core :refer [defroutes routes GET]]
             [compojure.handler :as handler]
             [mount.core :refer [defstate]]
             [hubble.utils.transit :refer [transit-out]]
@@ -21,28 +21,47 @@
 (defn render [filename]
   (slurp (io/resource filename)))
 
-(defn make-routes [clients]
-  (defroutes hroutes
+(def clients (atom []))
 
-    (GET "/" []
-         (render "index.html"))
+(defroutes hroutes
+  (GET "/" []
+       (render "index.html"))
 
-    (GET "/config" []
-         (str config))
+  (GET "/config" []
+       (str config))
 
-    (GET "/ws" [] (partial connect! clients)) ;; clients won't be sending anything, we only care to connect
+  (GET "/ws" [] (partial connect! clients)) ;; clients won't be sending anything, we only care to connect
 
-    (route/resources "/" {:root "."})
-    (route/not-found "page not found")))
+  (route/resources "/" {:root "."})
+  (route/not-found "page ot found"))
 
 (defn start-www [{:keys [server]}]
-  (let [clients (atom [])
-        server (hk/run-server (-> (make-routes clients)
+  (let [server (hk/run-server (-> #'hroutes
                                   wrap-reload
                                   handler/site)
                               {:port (server :port)})]
     {:stop-server server :clients clients}))           ;; http-kit/run-server returns a function that stops the server
 
+;; (defn make-routes [clients]
+;;   (routes
+;;     (GET "/" []
+;;          (render "index.html"))
+;; 
+;;     (GET "/config" []
+;;          (str config))
+;; 
+;;     (GET "/ws" [] (partial connect! clients)) ;; clients won't be sending anything, we only care to connect
+;; 
+;;     (route/resources "/" {:root "."})
+;;     (route/not-found "page ot found")))
+;; 
+;; (defn start-www [{:keys [server]}]
+;;   (let [clients (atom [])
+;;         server (hk/run-server (-> (make-routes clients)
+;;                                   wrap-reload)
+;;                               {:port (server :port)})]
+;;     {:stop-server server :clients clients}))           ;; http-kit/run-server returns a function that stops the server
+;; 
 (defstate ^{:on-reload :noop} http-server 
                               :start (start-www (config :hubble))
                               :stop (:stop-server http-server)) 

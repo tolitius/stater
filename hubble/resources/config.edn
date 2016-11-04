@@ -2,7 +2,7 @@
           :kv-prefix "/v1/kv"}
   :hubble
   {:server {:port 4242}
-   :store "spacecraft://tape"
+   :store {"spacecraft://tape"}
    :camera 
     {:mode "color"}
    :mission "Horsehead Nebula"}}

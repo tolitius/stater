@@ -6,6 +6,12 @@
 (defn by-id [id]
   (. js/document (getElementById id)))
 
+(defn now []
+  (.getTime (js/Date.)))
+
+(defn ms->sdate [ms]
+  (.toISOString (js/Date. ms)))
+
 (defn ws-status [ws]
   {:url (.-url ws) :ready-state (.-readyState ws)})
 

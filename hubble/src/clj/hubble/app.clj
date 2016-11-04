@@ -7,13 +7,15 @@
             [hubble.utils.upndown :refer [on-up on-upndown log]])
   (:gen-class))  ;; for -main / uberjar (no need in dev)
 
-(defn notify [{:keys [action name] :as event}]
-  (when (= action :up)
-    (broadcast-to-clients! http-server event)))
-
 ;; example of an app entry point
 (defn -main [& args]
-  (on-upndown :log log :before)         ;; registering "log" to "info" every time mount states start and stop
+
+  ;; registering "log" to "info" ":before" every time mount states start and stop
+  (on-upndown :info log :before)
+
   (init-consul "resources/config.edn")  ;; in reality this would be already in consul (i.e. no need)
   (mount/start)
-  (on-up :push notify :after))          ;; registering "notify" to notify browser clients on every state start
+
+  ;; registering "notify" to notify browser clients :after every state start
+  (on-up :push #(broadcast-to-clients! http-server %)
+         :after))
