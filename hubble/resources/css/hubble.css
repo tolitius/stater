@@ -26,4 +26,21 @@ body {
     min-height: 300px;
     border-radius: 10%;
     overflow: hidden;
+    padding-left: 80px;
+    color: rgba(255, 228, 0, 0.93);
+    font-weight: 100;
+    font-size: 0.6em;
+    margin-top: 38px;
+}
+
+#mission {
+    /* margin-left: 24px; */
+}
+
+#store {
+    margin-top:85px;
+}
+
+#camera {
+    margin-top:50px;
 }
