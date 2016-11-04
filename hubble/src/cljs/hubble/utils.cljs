@@ -10,7 +10,10 @@
   (.getTime (js/Date.)))
 
 (defn ms->sdate [ms]
-  (.toISOString (js/Date. ms)))
+  (println "ms >>> " ms)
+  (println "(type ms) >>> " (type ms))
+  (when ms
+    (.toISOString (js/Date. ms))))
 
 (defn ws-status [ws]
   {:url (.-url ws) :ready-state (.-readyState ws)})
