@@ -5,9 +5,9 @@
             [hubble.consul :refer [config]]))
 
 (defn add-watchers []
-  (let [watchers {:hubble/mission     [#'hubble.consul/config #'hubble.core/mission]
-                  :hubble/camera/mode [#'hubble.consul/config #'hubble.core/camera]
-                  :hubble/store       [#'hubble.consul/config #'hubble.core/store]}]
+  (let [watchers {:hubble/mission/target  [#'hubble.consul/config #'hubble.core/mission]
+                  :hubble/camera/mode     [#'hubble.consul/config #'hubble.core/camera]
+                  :hubble/store/url       [#'hubble.consul/config #'hubble.core/store]}]
     (mount/restart-listener watchers)))
 
 (defstate listener :start (add-watchers))

@@ -6,7 +6,24 @@ body {
     margin-top: 7%;
 }
 
-.rounded-corners img {     
+.container img {
+    width: 100%;
+}
+
+.round img {     
     border-radius: 50%;
+    overflow: hidden;
+}
+
+.rounded-corners img {     
+    border-radius: 5%;
+    overflow: hidden;
+}
+
+#space-log {
+    background-image: url("../img/space-log.png");
+    background-repeat: repeat-y;
+    min-height: 300px;
+    border-radius: 10%;
     overflow: hidden;
 }

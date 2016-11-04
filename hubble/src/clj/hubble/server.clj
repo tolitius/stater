@@ -21,51 +21,32 @@
 (defn render [filename]
   (slurp (io/resource filename)))
 
-;; \/ while developing to make sure compojure defroutes with external state works with wrap-reload
-
+;; this "def" is for dev to make sure compojure defroutes with external state works with wrap-reload
 (def clients (atom []))
-
-(defroutes hroutes
-  (GET "/" []
-       (render "index.html"))
-
-  (GET "/config" []
-       (str config))
-
-  (GET "/ws" [] (partial connect! clients)) ;; clients won't be sending anything, we only care to connect
-
-  (route/resources "/" {:root "."})
-  (route/not-found "page ot found"))
-
-(defn start-www [{:keys [server]}]
-  (let [server (hk/run-server (-> #'hroutes
-                                  wrap-reload
-                                  handler/site)
-                              {:port (server :port)})]
-    {:stop-server server :clients clients}))           ;; http-kit/run-server returns a function that stops the server
-
-;; this is how it (wrap-reload) should work, but does not
 
 ;; (defn make-routes [clients]
 ;;   (routes
-;;     (GET "/" []
-;;          (render "index.html"))
-;; 
-;;     (GET "/config" []
-;;          (str config))
-;; 
-;;     (GET "/ws" [] (partial connect! clients)) ;; clients won't be sending anything, we only care to connect
-;; 
-;;     (route/resources "/" {:root "."})
-;;     (route/not-found "page ot found")))
-;; 
-;; (defn start-www [{:keys [server]}]
-;;   (let [clients (atom [])
-;;         server (hk/run-server (-> (make-routes clients)
-;;                                   wrap-reload)
-;;                               {:port (server :port)})]
-;;     {:stop-server server :clients clients}))           ;; http-kit/run-server returns a function that stops the server
-;; 
+  (defroutes hroutes
+    (GET "/" []
+         (render "index.html"))
+
+    (GET "/config" []
+         (str config))
+
+    (GET "/ws" [] (partial connect! clients)) ;; clients won't be sending anything, we only care to connect
+
+    (route/resources "/" {:root "."})
+    (route/not-found "page ot found"))
+  ;; )
+
+(defn start-www [{:keys [server]}]
+  (let [;; clients (atom [])
+        server (hk/run-server (-> ;;(make-routes clients)
+                                  #'hroutes
+                                  wrap-reload)
+                              {:port (server :port)})]
+    {:stop-server server :clients clients}))           ;; http-kit/run-server returns a function that stops the server
+
 (defstate ^{:on-reload :noop} http-server 
                               :start (start-www (config :hubble))
                               :stop (:stop-server http-server)) 

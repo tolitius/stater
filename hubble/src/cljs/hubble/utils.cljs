@@ -1,5 +1,6 @@
 (ns hubble.utils
-    (:require [cognitect.transit :as t]))
+    (:require [clojure.string :as s]
+              [cognitect.transit :as t]))
 
 (enable-console-print!)
 
@@ -9,11 +10,15 @@
 (defn now []
   (.getTime (js/Date.)))
 
+(defn img-path [prefix v]
+  (when v
+    (as-> v $
+      (s/lower-case $)
+      (s/replace $ #"[^A-Za-z0-9]{1,}" "-")
+      (str "img/" prefix "/" $ ".png"))))
+
 (defn ms->sdate [ms]
-  (println "ms >>> " ms)
-  (println "(type ms) >>> " (type ms))
-  (when ms
-    (.toISOString (js/Date. ms))))
+  (.toISOString (js/Date. ms)))
 
 (defn ws-status [ws]
   {:url (.-url ws) :ready-state (.-readyState ws)})
@@ -24,5 +29,6 @@
 
 (defn connect [uri on-msg]
   (let [ws (js/WebSocket. uri)]
+    (set! (.-onopen ws) (println "connected to" uri))
     (set! (.-onmessage ws) on-msg)
     ws))

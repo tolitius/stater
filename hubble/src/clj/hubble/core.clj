@@ -9,5 +9,5 @@
 (defstate store :start {:connected-to (get-in config [:hubble :store])}
                 :stop {:connected-to nil})
 
-(defstate mission :start {:active true :target (get-in config [:hubble :mission])}
+(defstate mission :start {:active true :details (get-in config [:hubble :mission])}
                   :stop {:active false})
