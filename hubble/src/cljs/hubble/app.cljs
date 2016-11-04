@@ -15,13 +15,18 @@
 
 (rum/defc hubble-store < rum/reactive []
   [:img {:src (as-> (rum/react store) $
-                    (get-in $ [:connected-to :url])
-                    (u/img-path "store" $))}])
+                (get-in $ [:connected-to :url])
+                (u/img-path "store" $))}])
 
 (rum/defc hubble-mission < rum/reactive []
-  [:img {:src (as-> (rum/react mission) $
-                    (get-in $ [:details :target])
-                    (u/img-path "mission" $))}])
+  (let [color (if (= "mono" (-> (rum/react camera)
+                               :settings :mode))
+                "grayscale"
+                "in-color")]
+    [:img {:class color
+           :src (as-> (rum/react mission) $
+                  (get-in $ [:details :target])
+                  (u/img-path "mission" $))}]))
 
 (rum/defc hubble-camera < rum/reactive []
   [:img {:src (as-> (rum/react camera) $
@@ -29,15 +34,16 @@
                     (u/img-path "camera" $))}])
 
 (defn read-news [msg]
-  (let [{:keys [name state]} (u/unpack msg)]
-    (println "news from the server:" [name state])
-    (when (not= name "#'hubble.consul/config")
-      (case name
-        "#'hubble.core/mission" (reset! mission state)
-        "#'hubble.core/store" (reset! store state)
-        "#'hubble.core/camera" (reset! camera state))
+  (let [{:keys [name state]} (u/unpack msg)
+        component (u/short-name name)]
+    (println "news from the server:" [component state])
+    (when (not= component :config)
+      (case component
+        :mission (reset! mission state)
+        :store (reset! store state)
+        :camera (reset! camera state))
       (swap! log assoc (u/now)
-                       (str {name state})))))
+                       (str {component state})))))
 
 (defn init []
   (u/connect (str "ws://" (.-host js/location) "/ws")

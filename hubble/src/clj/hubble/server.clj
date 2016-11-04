@@ -7,16 +7,23 @@
             [compojure.core :refer [defroutes routes GET]]
             [compojure.handler :as handler]
             [mount.core :refer [defstate]]
-            [hubble.utils.transit :refer [transit-out]]
+            [hubble.core :refer [mission camera store]]
+            [hubble.utils.transit :as transit]
             [hubble.consul :refer [config]]))
 
 (defn connect! [clients request]
   (hk/with-channel request channel
+    (hk/on-receive channel (fn [msg]
+                             (info "received" msg "from client")
+                             (doseq [[n s] {:mission mission
+                                            :store store
+                                            :camera camera}]
+                               (hk/send! channel (transit/to-str {:name n :state s})))))
     (swap! clients conj channel)))    ;; in this case we don't care to "diff" the clients
 
 (defn broadcast-to-clients! [{:keys [clients]} msg]
   (doseq [c @clients]
-    (hk/send! c (String. (transit-out msg)))))
+    (hk/send! c (transit/to-str msg))))
 
 (defn render [filename]
   (slurp (io/resource filename)))

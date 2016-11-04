@@ -17,6 +17,13 @@
       (s/replace $ #"[^A-Za-z0-9]{1,}" "-")
       (str "img/" prefix "/" $ ".png"))))
 
+(defn short-name [n]
+  (if (string? n)
+    (-> (s/split n #"/")
+        last
+        keyword)
+    n))
+
 (defn ms->sdate [ms]
   (.toISOString (js/Date. ms)))
 
@@ -29,6 +36,7 @@
 
 (defn connect [uri on-msg]
   (let [ws (js/WebSocket. uri)]
-    (set! (.-onopen ws) (println "connected to" uri))
+    (set! (.-onopen ws) (do (println "connected to" uri)
+                            (js/setTimeout #(.send ws "ready") 10)))
     (set! (.-onmessage ws) on-msg)
     ws))

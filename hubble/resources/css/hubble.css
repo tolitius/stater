@@ -23,7 +23,6 @@ body {
 #space-log {
     background-image: url("../img/space-log.png");
     background-repeat: repeat-y;
-    min-height: 300px;
     border-radius: 10%;
     overflow: hidden;
     padding-left: 80px;
@@ -33,14 +32,19 @@ body {
     margin-top: 38px;
 }
 
-#mission {
-    /* margin-left: 24px; */
+#mission img {
+    max-height: 450px;
 }
 
 #store {
     margin-top:85px;
+    min-height: 119px;
 }
 
 #camera {
     margin-top:50px;
+}
+
+.grayscale {
+    filter: grayscale(100%);
 }

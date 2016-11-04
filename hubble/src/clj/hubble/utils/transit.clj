@@ -20,6 +20,9 @@
      (.reset baos)
      ret)))
 
+(defn to-str [xs]
+  (String. (transit-out xs)))
+
 (defn transit-in
   ([data]
    (transit-in data :json {}))
