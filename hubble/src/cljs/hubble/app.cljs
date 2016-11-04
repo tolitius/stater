@@ -21,13 +21,13 @@
 
 (rum/defc hubble-mission < rum/reactive []
   (let [color (if (= "mono" (-> (rum/react camera)
-                               :settings :mode))
+                                :settings :mode))
                 "grayscale"
                 "in-color")]
     [:img {:class color
-           :src (as-> (rum/react mission) $
-                  (get-in $ [:details :target])
-                  (u/img-path "mission" $))}]))
+           :src (->> (rum/react mission)
+                     :target
+                     (u/img-path "mission"))}]))
 
 (rum/defc hubble-camera < rum/reactive []
   [:div [:p.component-name "camera"]
@@ -37,14 +37,17 @@
 
 (rum/defc recalibrate < rum/reactive []
   (let [next-mission (rum/react mission)]
-    [:img {:src "img/repoint-hubble.gif"}]))
+    [:img {:class "recal"
+           :src "img/repoint-hubble.gif"}]))
 
 (defn repoint-hubble [state]
-  (rum/mount (recalibrate) (u/by-id "mission"))
-  (js/setTimeout (fn []
-                   (reset! mission state)
-                   (rum/unmount (u/by-id "mission"))
-                   (rum/mount (hubble-mission) (u/by-id "mission"))) 9000))
+  (let [{:keys [details]} state
+        melem (u/by-id "mission")]
+    (rum/mount (recalibrate) melem)
+    (js/setTimeout (fn []
+                     (reset! mission details)
+                     (rum/unmount melem)
+                     (rum/mount (hubble-mission) melem)) 6000)))
 
 (defn read-news [msg]
   (let [{:keys [name state]} (u/unpack msg)
@@ -56,7 +59,7 @@
         :store (reset! store state)
         :camera (reset! camera state))
       (swap! log assoc (u/now)
-                       (str {component state})))))
+                       (str {component (dissoc state :active)})))))
 
 (defn init []
   (u/connect (str "ws://" (.-host js/location) "/ws")

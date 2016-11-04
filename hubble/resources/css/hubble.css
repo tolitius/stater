@@ -15,7 +15,12 @@ body {
     overflow: hidden;
 }
 
-.rounded-corners img {     
+.recal {
+    border-radius: 10% !important;
+    margin-top: 78px;
+}
+
+.rounded-corners img {
     border-radius: 5%;
     overflow: hidden;
 }
@@ -58,7 +63,7 @@ body {
 
 #store {
     margin-top: 73px;
-    min-height: 119px;
+    height: 119px;
 }
 
 #camera {
