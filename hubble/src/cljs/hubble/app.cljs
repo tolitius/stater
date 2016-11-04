@@ -30,4 +30,6 @@
 (defn init []
   (u/connect (str "ws://" (.-host js/location) "/ws")
              read-news)
-  (rum/mount (space-log) (u/by-id "space-log")))
+  (rum/mount (space-log) (u/by-id "space-log"))
+  (rum/mount (storage) (u/by-id "storage"))
+  (rum/mount (mission) (u/by-id "mission")))
