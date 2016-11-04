@@ -21,6 +21,8 @@
 (defn render [filename]
   (slurp (io/resource filename)))
 
+;; \/ while developing to make sure compojure defroutes with external state works with wrap-reload
+
 (def clients (atom []))
 
 (defroutes hroutes
@@ -41,6 +43,8 @@
                                   handler/site)
                               {:port (server :port)})]
     {:stop-server server :clients clients}))           ;; http-kit/run-server returns a function that stops the server
+
+;; this is how it (wrap-reload) should work, but does not
 
 ;; (defn make-routes [clients]
 ;;   (routes

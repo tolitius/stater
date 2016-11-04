@@ -1,0 +1,12 @@
+body {
+    background-image: url("../img/night-sky.jpg");
+}
+
+.container {
+    margin-top: 60px;
+}
+
+.rounded-corners img {     
+    border-radius: 50%;
+    overflow: hidden;
+}
