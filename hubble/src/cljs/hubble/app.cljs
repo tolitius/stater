@@ -47,7 +47,7 @@
     (js/setTimeout (fn []
                      (reset! mission details)
                      (rum/unmount melem)
-                     (rum/mount (hubble-mission) melem)) 6000)))
+                     (rum/mount (hubble-mission) melem)) 3000)))
 
 (defn read-news [msg]
   (let [{:keys [name state]} (u/unpack msg)

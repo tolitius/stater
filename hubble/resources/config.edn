@@ -3,4 +3,4 @@
  :hubble {:server {:port 4242}
           :store {:url "spacecraft://tape"}
           :camera {:mode "mono"}
-          :mission {:target "Horsehead Nebula"}}}
+          :mission {:target "Eagle Nebula"}}}
