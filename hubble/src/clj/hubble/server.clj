@@ -28,32 +28,26 @@
 (defn render [filename]
   (slurp (io/resource filename)))
 
-;; this "def" is for dev to make sure compojure defroutes with external state works with wrap-reload
-(def clients (atom []))
-
-;; (defn make-routes [clients]
-;;   (routes
-  (defroutes hroutes
+(defn make-routes [clients]
+  (routes
     (GET "/" []
          (render "index.html"))
 
     (GET "/config" []
          (str config))
 
-    (GET "/ws" [] (partial connect! clients)) ;; clients won't be sending anything, we only care to connect
+    (GET "/ws" [] (partial connect! clients))
 
     (route/resources "/" {:root "."})
-    (route/not-found "page ot found"))
-  ;; )
+    (route/not-found "page ot found")))
 
 (defn start-www [{:keys [server]}]
-  (let [;; clients (atom [])
-        server (hk/run-server (-> ;;(make-routes clients)
-                                  #'hroutes
+  (let [clients (atom [])
+        server (hk/run-server (-> (make-routes clients)
                                   wrap-reload)
                               {:port (server :port)})]
     {:stop-server server :clients clients}))           ;; http-kit/run-server returns a function that stops the server
 
 (defstate ^{:on-reload :noop} http-server 
                               :start (start-www (config :hubble))
-                              :stop (:stop-server http-server)) 
+                              :stop ((:stop-server http-server)))
