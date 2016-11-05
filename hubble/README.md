@@ -8,19 +8,19 @@ Earth awaits for one of the Hubble's Clojure/Script engines to boot up to commun
 
 We are inside the Hubble, let's help booting it up...
 
-<img width="600px" src="hubble/doc/img/boot-up.gif" width="350px">
+<img width="600px" src="doc/img/boot-up.gif" width="350px">
 
 ## Hubble, can you hear me?
 
 Not only can the Hubble hear you, but it can also _listen_ to you and help humanity navigate through the space:
 
-<p align="center"><img width="100%" src="hubble/doc/img/hubble-mission.gif" width="600px"></p>
+<p align="center"><img width="100%" src="doc/img/hubble-mission.gif" width="600px"></p>
 
 ## What's inside
 
 ### Backend
 
-Hubble listens to Consul events via [envoy](https://github.com/tolitius/envoy):
+Hubble listens to [Consul](https://www.consul.io/) events via [envoy](https://github.com/tolitius/envoy):
 
 ```clojure
 (defn watch-consul [path]
