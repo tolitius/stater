@@ -57,6 +57,10 @@ using almighty [httpkit](http://www.http-kit.org/server.html#websocket).
 In order for people of Earth to visualize Hubble component states, space log, and what Hubble is currently doing, an excellent, mission critical [rum](https://github.com/tonsky/rum) reacts to all the changes sent by Hubble and rerenders components.
 Again, only components that need to rerender will, because _incremental_ changes rule.
 
+## Can I control Hubble?
+
+You sure can, just [point](https://github.com/tolitius/stater/blob/master/hubble/resources/config.edn#L1) it to your Consul and `boot up`.
+
 ## License
 
 Copyright © 2016 tolitius
