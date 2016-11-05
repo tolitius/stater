@@ -16,6 +16,13 @@ Not only can Hubble hear you, but it can also _listen_ to you and help humanity 
 
 <p align="center"><img width="100%" src="doc/img/hubble-mission.gif" width="600px"></p>
 
+steps taken:
+
+* upgrading Hubble store from `spacecraft://tape` to `spacecraft://ssd`
+* mission change from `Eagle Nebula` to `Horsehead Nebula`
+* swapping the old monochrome camera for a new color one
+* mission change form `Horsehead Nebula` to `Pismis 24-1`
+
 Hubble is configured, serviced and controlled from Earth via [Consul](https://www.consul.io/). Every event Hubble receives is audited into its space log (a.k.a the "mission log").
 
 ## What's inside
@@ -34,7 +41,7 @@ Hubble listens to Consul events via [envoy](https://github.com/tolitius/envoy):
 ```
 
 [mount](https://github.com/tolitius/mount) listens to envoy,
-and restarts _only those_ Hubble components that need to be restarted given the change in the Consul:
+and restarts _only those_ Hubble components that need to be restarted given the change in Consul:
 
 ```clojure
 (defn add-watchers []
