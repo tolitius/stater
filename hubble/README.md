@@ -68,6 +68,16 @@ Again, only components that need to rerender will, because _incremental_ changes
 
 You sure can, just [point](https://github.com/tolitius/stater/blob/master/hubble/resources/config.edn#L1) it to your Consul and `boot up`.
 
+## Does Hubble really use LISP?
+
+In fact it does for many years now. Meet [SPIKE: Intelligent Scheduling of Hubble Space Telescope Observations](http://www.stsci.edu/~miller/papers-and-meetings/93-Intelligent-Scheduling/spike/spike-chapter3.html#REF10398):
+
+> The development of started in early 1987 using Texas Instruments Explorer Lisp machines
+
+> Since 1987 there has been a great deal of evolution in Lisp hardware and software. We have continued to modify to keep pace with these changes
+
+> Updating for new Lisp language features has not been difficult, and there are currently no plans to convert any of the system to C or C++
+
 ## License
 
 Copyright © 2016 tolitius
