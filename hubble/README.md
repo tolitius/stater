@@ -68,6 +68,12 @@ Again, only components that need to rerender will, because _incremental_ changes
 
 You sure can, just [point](https://github.com/tolitius/stater/blob/master/hubble/resources/config.edn#L1) it to your Consul and `boot up`.
 
+In case you do not have a Consul instance running, you can just install it (i.e. `brew instal consul` or [similar](https://www.consul.io/intro/getting-started/install.html)) and start it in dev mode:
+
+```bash
+$ consul agent -dev
+```
+
 ## Does Hubble really use LISP?
 
 In fact it does for many years now. Meet [SPIKE: Intelligent Scheduling of Hubble Space Telescope Observations](http://www.stsci.edu/~miller/papers-and-meetings/93-Intelligent-Scheduling/spike/spike-chapter3.html#REF10398):
