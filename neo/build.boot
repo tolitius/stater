@@ -1,6 +1,6 @@
 (set-env!
   :source-paths #{"src"}
-  :dependencies '[[mount                          "0.1.9-SNAPSHOT"]
+  :dependencies '[[mount                          "0.1.11-SNAPSHOT"]
 
                   ;; deps for sample apps
                   [datascript                     "0.13.3"    :scope "provided"]
@@ -13,6 +13,9 @@
                   [org.clojure/tools.namespace    "0.2.11"    :scope "provided"]
                   [org.clojure/tools.nrepl        "0.2.12"    :scope "provided"]
                   [com.datomic/datomic-free       "0.9.5327"  :scope "provided" :exclusions [joda-time]]
+
+                  ;; atom repl to play with
+                  [proto-repl                     "0.3.1"     :scope "provided"]
 
                   ;; boot clj
                   [boot/core                "2.5.1"           :scope "provided"]
