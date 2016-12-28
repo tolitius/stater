@@ -10,7 +10,7 @@
                  [http-kit                     "2.2.0"]
                  [ring                         "1.6.0-beta6"]
                  [rum                          "0.10.7"]
-                 [mount                        "0.1.11-SNAPSHOT"]
+                 [mount                        "0.1.11"]
                  [tolitius/envoy               "0.0.1-SNAPSHOT"]
                  [robert/hooke                 "1.3.0"]
                  [org.clojure/tools.logging    "0.3.1"]
