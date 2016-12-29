@@ -1,10 +1,11 @@
 (set-env!
   :source-paths #{"src"}
-  :dependencies '[[mount                          "0.1.9"]
+  :dependencies '[[mount                          "0.1.11"]
                   [twilio-api                     "1.0.1"]
                   [compojure                      "1.4.0"]
                   [ring/ring-jetty-adapter        "1.1.0"]
                   [cheshire                       "5.5.0"]
+                  [tolitius/mount-up                       "0.1.0-SNAPSHOT"]
                   [ch.qos.logback/logback-classic "1.1.3"]
                   [org.clojure/tools.logging      "0.3.1"]
                   [robert/hooke                   "1.3.0"]

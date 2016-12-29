@@ -84,25 +84,36 @@ One thing to note, the real `twilio/send-sms` returns a future, so in order to b
   (future))
 ```
 
-### Creating and Using a Test State
+### Testing by Swapping
 
-Now all that needs to be done is to create a test state and let mount know to use it instead if the real one. We can do it from within a test file:
-
-```clojure
-(def sms-ch (chan))  ;; can also be a state
-
-(defstate send-sms :start (fn [sms] 
-                            (go (>! sms-ch sms))
-                            (future)))
-```
-
-and in order to use it we would start mount with this test state instead of the real one:
+Now all that needs to be done is to create a test function and let mount know to use it instead if the real one.
 
 ```clojure
-(mount/start-with {#'app.sms/send-sms #'test.app/send-sms})
+;; ...
+(let [sms-ch (chan)
+      send-sms (fn [sms] (go (>! sms-ch sms))
+                 (future))]                        ;; twilio API returns a future
+  (mount/start-with {#'app.sms/send-sms send-sms})
+;; ...
 ```
 
-This way the application will be started as usual, but instead of the real `send-sms` state, it would use this one from a `test.app`.
+We can do it from within a test file:
+
+```clojure
+(deftest swapping-with-value
+  (testing "sms endpoint should send sms"
+    (let [sms-ch (chan)
+          send-sms (fn [sms] (go (>! sms-ch sms))
+                     (future))]                        ;; twilio API returns a future
+      (mount/start-with {#'app.sms/send-sms send-sms})
+      (http/post (post-sms-url "mars" "earth" "we found a bottle of scotch!"))
+      (is (= "we found a bottle of scotch!"
+             (:body (<!! sms-ch)))))
+    (mount/stop)))
+```
+
+In this test all the application components work with a test `send-sms` function rather than the real one.
+In other (more OO) words, mount injected a test `send-sms` into an app _instead of_ the real one.
 
 Check out the [working test](https://github.com/tolitius/stater/blob/master/smsio/test/app/test/app.clj) to get a visual on how all the above pieces come together.
 

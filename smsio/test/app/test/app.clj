@@ -22,16 +22,13 @@
 
 ;; can also substitute states with other states
 
-(def sms-ch (chan))  ;; can also be a state
-
-(defstate send-sms :start (fn [sms] 
-                            (go (>! sms-ch sms))
-                            (future)))                 ;; twilio API returns a future
-
-(deftest swapping-with-state
+#_(deftest swapping-with-state
   (testing "sms endpoint should send sms"
-    (mount/start-with-states {#'app.sms/send-sms #'test.app/send-sms})
-    (http/post (post-sms-url "mars" "earth" "we found a bottle of scotch!"))
-    (is (= "we found a bottle of scotch!"
-           (:body (<!! sms-ch))))
-    (mount/stop)))
+    (let [sms-ch (chan)]
+          (mount/start-with-states {#'app.sms/send-sms {:start (fn [sms]
+                                                                 (go (>! sms-ch sms))
+                                                                 (future))}})         ;; twilio API returns a future
+          (http/post (post-sms-url "mars" "earth" "we found a bottle of scotch!"))
+          (is (= "we found a bottle of scotch!"
+                 (:body (<!! sms-ch))))
+          (mount/stop))))

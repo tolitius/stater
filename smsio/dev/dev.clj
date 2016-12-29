@@ -3,12 +3,12 @@
             [clojure.tools.namespace.repl :as tn]
             [mount.core :as mount :refer [defstate]]
             [mount.tools.graph :refer [states-with-deps]]
-            [utils.logging :refer [with-logging-status]]
+            [mount-up.core :refer [on-upndown log]]
             [app.www]
             [app.sms :refer [send-sms]]))
 
 (defn start []
-  (with-logging-status)
+  (on-upndown :info log :before)
   (mount/start))
 
 (defn stop []
