@@ -12,7 +12,8 @@
 (deftest swapping-with-value
   (testing "sms endpoint should send sms"
     (let [sms-ch (chan)
-          send-sms (fn [sms] (go (>! sms-ch sms))
+          send-sms (fn [sms]
+                     (go (>! sms-ch sms))
                      (future))]                        ;; twilio API returns a future
       (mount/start-with {#'app.sms/send-sms send-sms})
       (http/post (post-sms-url "mars" "earth" "we found a bottle of scotch!"))
@@ -22,13 +23,15 @@
 
 ;; can also substitute states with other states
 
-#_(deftest swapping-with-state
+(deftest swapping-with-state
   (testing "sms endpoint should send sms"
-    (let [sms-ch (chan)]
-          (mount/start-with-states {#'app.sms/send-sms {:start (fn [sms]
-                                                                 (go (>! sms-ch sms))
-                                                                 (future))}})         ;; twilio API returns a future
-          (http/post (post-sms-url "mars" "earth" "we found a bottle of scotch!"))
-          (is (= "we found a bottle of scotch!"
-                 (:body (<!! sms-ch))))
-          (mount/stop))))
+    (let [sms-ch (chan)
+          send-sms (fn [sms]
+                     (go (>! sms-ch sms))
+                     (future))]                                                  ;; twilio API returns a future
+      (mount/start-with-states {#'app.sms/send-sms {:start (fn [] send-sms)
+                                                    :stop #(println "stopping sms sender")}})
+      (http/post (post-sms-url "mars" "earth" "we found a bottle of scotch!"))
+      (is (= "we found a bottle of scotch!"
+             (:body (<!! sms-ch)))))
+    (mount/stop)))

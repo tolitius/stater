@@ -54,7 +54,7 @@ I am sure you noticed, but the Twilio phone number this SMS is sent from is:
 
 ## Swapping SMS sender for testing
 
-The reason for this example is to show how to test by swapping states with their mocks / stubs.
+The reason for this example is to show how to test by swapping components with their mocks / stubs.
 
 Every app is different, and states to swap will also be different. We are going to replace a [send-sms state](https://github.com/tolitius/stater/blob/master/smsio/src/app/sms.clj#L12) that is defined in the app as: 
 
@@ -69,7 +69,9 @@ Every app is different, and states to swap will also be different. We are going 
                             (:sms config)))
 ```
 
-notice that, once started, the `send-sms` will be just a funciton. Which means that if it is needed to be replaced during testing, it can be replaced with a test function that, for example, receives an SMS and puts in on a core.async channel:
+notice that, once started, the `send-sms` will be just a funciton.
+Which means that if it is needed to be replaced during testing,
+it can be replaced with a test function that, for example, receives an SMS and puts in on a core.async channel:
 
 ```clojure
 (fn [sms] 
@@ -84,26 +86,28 @@ One thing to note, the real `twilio/send-sms` returns a future, so in order to b
   (future))
 ```
 
-### Testing by Swapping
+### Swapping Realities
 
 Now all that needs to be done is to create a test function and let mount know to use it instead if the real one.
 
 ```clojure
 ;; ...
 (let [sms-ch (chan)
-      send-sms (fn [sms] (go (>! sms-ch sms))
+      send-sms (fn [sms]
+                 (go (>! sms-ch sms))
                  (future))]                        ;; twilio API returns a future
   (mount/start-with {#'app.sms/send-sms send-sms})
 ;; ...
 ```
 
-We can do it from within a test file:
+Putting this theory to the real test:
 
 ```clojure
 (deftest swapping-with-value
   (testing "sms endpoint should send sms"
     (let [sms-ch (chan)
-          send-sms (fn [sms] (go (>! sms-ch sms))
+          send-sms (fn [sms]
+                     (go (>! sms-ch sms))
                      (future))]                        ;; twilio API returns a future
       (mount/start-with {#'app.sms/send-sms send-sms})
       (http/post (post-sms-url "mars" "earth" "we found a bottle of scotch!"))

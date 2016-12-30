@@ -16,9 +16,9 @@
                   [org.clojure/tools.nrepl        "0.2.12"    :scope "provided"]
 
                   ;; boot clj
-                  [boot/core                "2.5.1"           :scope "provided"]
+                  [boot/core                "2.7.1"           :scope "provided"]
                   [adzerk/bootlaces         "0.1.13"          :scope "test"]
-                  [adzerk/boot-logservice   "1.0.1"           :scope "test"]
+                  [adzerk/boot-logservice   "1.2.0"           :scope "test"]
                   [adzerk/boot-test         "1.0.6"           :scope "test"]
                   [tolitius/boot-stripper   "0.1.0-SNAPSHOT"  :scope "test"]
                   [tolitius/boot-check      "0.1.1"           :scope "test"]])
