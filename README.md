@@ -6,7 +6,7 @@ sample [mount](https://github.com/tolitius/mount) based apps
 
 ### smsio
 
-[smsio](smsio) demonstrates how a state can be just a funciton as well as how states can be swapped for testing.
+[smsio](smsio) demonstrates how a state can be just a function as well as how states can be swapped for testing.
 
 ### Hubble
 
