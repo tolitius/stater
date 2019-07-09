@@ -10,7 +10,7 @@ sample [mount](https://github.com/tolitius/mount) based apps
 
 ### Hubble
 
-[hubble](hubble) an example of mount restart listners: events come in from Consul, picked up by mount and pushed to UI via websockets.
+[hubble](https://github.com/tolitius/hubble) an example of mount restart listners: events come in from Consul, picked up by mount and pushed to UI via websockets.
 
 ### Neo Options Exchange
 
